@@ -1,2 +1,2 @@
 Horwitz | Moses  | Male | Red   | 1897-06-19
-Horward | Moe    | Male | Red   | 1897-06-19
+Howard  | Moe    | Male | Red   | 1897-06-19

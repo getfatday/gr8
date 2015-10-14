@@ -2,7 +2,7 @@ import through from 'through2';
 import { expect } from 'chai';
 import { delimited, json } from '../lib/format';
 
-describe('With format', () => {
+describe('With Format', () => {
   it('should format data to delimited output', done => {
     const stream = delimited();
     const input = {

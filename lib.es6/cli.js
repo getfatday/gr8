@@ -19,6 +19,10 @@ const argv = cli
         .alias('delimiter', 'd')
         .nargs('delimiter', 1)
         .describe('delimiter', 'Specify delimiter for delimited format')
+        .alias('sort', 's')
+        .nargs('sort', 1)
+        .describe('sort', 'Comma delimited list of field headers to sort by')
+        .example('$0 -s DateOfBirth,-LastName', 'Sort fields ascending by DateOfBirth, then descending by LastName')
         .help('h')
         .alias('h', 'help')
         .default('f', FIELDS.join(','))
@@ -40,7 +44,8 @@ if (!process.stdin.isTTY) input.add(process.stdin);
 const {
   format,
   fields,
-  delimiter
+  delimiter,
+  sort
 } = argv;
 
 // Send input to gr8 and pipe output to stdout
@@ -48,6 +53,11 @@ input
   .pipe(gr8({
     format,
     fields: fields.split(/[ ,]+/),
-    delimiter
+    delimiter,
+    sort: !sort ? false : sort.split(/[ ,]+/).map(name => {
+      return name.indexOf('-') === 0
+        ? [name.slice(1), false]
+        : [name, true];
+    })
   }))
   .pipe(process.stdout);

@@ -7,11 +7,39 @@ import * as format from './format';
 
 const DEFAULTS = {
   fields: FIELDS,
-  sort: false,
   parser
 };
 
-// Parse input line as key / values pairs.
+function sortBy(keys) {
+  return (a, b) => {
+    let stack = keys.slice();
+    let key, direction;
+    let sort = stack.shift();
+
+    while(sort) {
+      [key, direction] = sort;
+      if (a[key] < b[key]) return direction ? -1 : 1;
+      if (a[key] > b[key]) return direction ? 1 : -1;
+      sort = stack.shift();
+    }
+    return 0;
+  };
+};
+
+// Sort input based on key
+export function sort(keys = [[FIELDS[0], true]]) {
+  let results = [];
+  let sort = sortBy(keys);
+  return through.obj(function (data, env, next) {
+    results.push(data);
+    next();
+  }, function (next) {
+    results.sort(sort).forEach(data => this.push(data));
+    next();
+  });
+}
+
+// Parse input line as key / values pairs
 export function map(options) {
   options = Object.assign({}, DEFAULTS, options);
   const parse = options.parser(options.fields);
@@ -33,6 +61,11 @@ export default function (options) {
   let stack = [
     map(options)
   ];
+
+  // Sort output
+  if (options.sort) {
+    stack.push(sort(options.sort));
+  }
 
   // Add format to the stack if requested
   if (options.format && format[options.format]) {

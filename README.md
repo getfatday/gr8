@@ -37,13 +37,17 @@ gr8 [options] [file ...]
 
 **-f, --fields**
 
-Comma delimited list of field headers to user.
+Comma delimited list of field headers to user
 (default: 'LastName,FirstName,Gender,FavoriteColor,DateOfBirth' )
 
 **-d, --delimiter**
 
-Specify delimiter for delimited format.
+Specify delimiter for delimited format
 (default: ', ' )
+
+**-s, --sort**
+
+Comma delimited list of field headers to sort by
 
 **--format**
 
@@ -74,12 +78,28 @@ Map parsed files to custom fields:
 > gr8 -f last,first,gender,color,birth foo.txt bar.txt
 ```
 
+Sort fields ascending by DateOfBirth, then descending by LastName
+
+```sh
+> gr8 -s DateOfBirth,-LastName foo.txt bar.txt
+```
+
 ## Programmatic Usage
 
 ```js
 import gr8 from 'gr8';
 
-let stream = gr8();
+const options = {
+  format: 'delimited',
+  delimiter: ' | ',
+  sort: [['FirstName', true], ['LastName', false]],
+  fields: [
+    'last', 'first', 'gender', 'color', 'birthday'
+  ],
+  parser: () => line => JSON.parse(line)
+};
+
+let stream = gr8(options);
 stream.write('Horwitz | Moses  | Male | Red   | 1897-06-19');
 stream.end();
 ```
@@ -88,4 +108,24 @@ stream.end();
 
 ```sh
 npm test
+```
+
+## Challenges
+
+Sorted by gender (females before males) then by last name ascending.
+
+```sh
+gr8 -s Gender,LastName
+```
+
+Sorted by birth date, ascending
+
+```sh
+gr8 -s DateOfBirth
+```
+
+Sorted by last name, descending
+
+```sh
+gr8 -s -LastName
 ```

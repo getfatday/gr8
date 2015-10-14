@@ -115,5 +115,31 @@ LastName FirstName Gender FavoriteColor DateOfBirth`);
 LastName, FirstName, Gender, FavoriteColor, DateOfBirth
 LastName FirstName Gender FavoriteColor DateOfBirth`);
     stream.end();
-   });
+  });
+  it('should sort output by field', done => {
+    const stream = gr8({ sort: [['LastName', true], ['FirstName', false]]});
+    const firstName = ['Larry', 'Larry', 'Moses', 'Jerome', 'Moe', 'Curly'];
+    const lastName = ['Fine', 'Fine', 'Horwitz', 'Horwitz', 'Howard', 'Howard'];
+    let results = {
+      firstName: [],
+      lastName: []
+    };
+    stream.pipe(through.obj((data, enc, next) => {
+      results.firstName.push(data.FirstName);
+      results.lastName.push(data.LastName);
+      next();
+    }, next => {
+      expect(results.firstName).to.deep.equal(firstName);
+      expect(results.lastName).to.deep.equal(lastName);
+      done();
+    }));
+
+    stream.write(`Horwitz, Jerome, Male, Blue, 8/22/1903
+Howard, Curly, Male, Blue, 8/22/1903
+Horwitz, Moses, Male, Red, 6/19/1897
+Howard, Moe, Male, Red, 6/19/1897
+Fine, Larry, Male, Green, 8/5/1902
+Fine, Larry, Male, Green, 8/5/1902`);
+    stream.end();
+  });
 });
