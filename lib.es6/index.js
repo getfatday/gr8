@@ -10,6 +10,9 @@ const DEFAULTS = {
   parser
 };
 
+// Returns a sort function based on an array of [key, direction]
+// pairs. Setting the direction to true will sort in ascending order
+// and descending order for false.
 function sortBy(keys) {
   return (a, b) => {
     let stack = keys.slice();

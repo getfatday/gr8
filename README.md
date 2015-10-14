@@ -115,17 +115,41 @@ npm test
 Sorted by gender (females before males) then by last name ascending.
 
 ```sh
-gr8 -s Gender,LastName
+gr8 -s Gender,LastName << EOF
+Horwitz, Jerome, Male, Blue, 8/22/1903
+Howard, Curly, Male, Blue, 8/22/1903
+Horwitz, Moses, Male, Red, 6/19/1897
+Howard, Moe, Male, Red, 6/19/1897
+Fine, Larry, Male, Green, 8/5/1902
+Howard, Shemp, Female, Yellow, 3/11/1895
+Horwitz, Samuel, Female, Yellow, 3/11/1895
+EOF
 ```
 
 Sorted by birth date, ascending
 
 ```sh
-gr8 -s DateOfBirth
+gr8 -s DateOfBirth << EOF
+Horwitz, Jerome, Male, Blue, 8/22/1903
+Howard, Curly, Male, Blue, 8/22/1903
+Horwitz, Moses, Male, Red, 6/19/1897
+Howard, Moe, Male, Red, 6/19/1897
+Fine, Larry, Male, Green, 8/5/1902
+Howard, Shemp, Male, Yellow, 3/11/1895
+Horwitz, Samuel, Male, Yellow, 3/11/1895
+EOF
 ```
 
 Sorted by last name, descending
 
 ```sh
-gr8 -s -LastName
+gr8 -s -LastName << EOF
+Horwitz, Jerome, Male, Blue, 8/22/1903
+Howard, Curly, Male, Blue, 8/22/1903
+Horwitz, Moses, Male, Red, 6/19/1897
+Howard, Moe, Male, Red, 6/19/1897
+Fine, Larry, Male, Green, 8/5/1902
+Howard, Shemp, Male, Yellow, 3/11/1895
+Horwitz, Samuel, Male, Yellow, 3/11/1895
+EOF
 ```
