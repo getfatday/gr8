@@ -1,0 +1,50 @@
+{
+  "name": "gr8",
+  "version": "0.0.0",
+  "description": "Guaranteed Rate Dev Candidate Homework",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha test",
+    "compile": "babel --optional runtime -e 0 -d lib lib.es6",
+    "watch": "babel --watch --optional runtime -e 0 -d lib lib.es6",
+    "preversion": "npm run compile",
+    "pretest": "npm run compile"
+  },
+  "bin": {
+    "gr8": "./lib/cli.js"
+  },
+  "config": {
+    "blanket": {
+      "pattern": [
+        "gr8/lib"
+      ]
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getfatday/gr8.git"
+  },
+  "author": "Ian Anderson <ian@ianize.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/getfatday/gr8/issues"
+  },
+  "homepage": "https://github.com/getfatday/gr8#readme",
+  "dependencies": {
+    "babel-runtime": "~5.8.25",
+    "event-stream": "~3.3.1",
+    "express": "~4.13.3",
+    "merge-stream": "~1.0.0",
+    "stream-combiner2": "~1.0.2",
+    "through2": "~2.0.0",
+    "yargs": "~3.27.0"
+  },
+  "devDependencies": {
+    "babel": "~5.8.23",
+    "blanket": "~1.1.7",
+    "chai": "~3.3.0",
+    "mocha": "~2.3.3",
+    "mocha-spec-cov": "0.0.3",
+    "supertest": "~1.1.0"
+  }
+}

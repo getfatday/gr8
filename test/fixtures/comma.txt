@@ -1,0 +1,2 @@
+Horwitz , Jerome , Male , Blue  , 1903-08-22
+Howard  , Curly  , Male , Blue  , 1903-08-22
