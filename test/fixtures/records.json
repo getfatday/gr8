@@ -1,0 +1,67 @@
+{
+   "records" : [
+      {
+         "lastname" : "Horwitz",
+         "birthdate" : "1903-08-22T10:00:00.000Z",
+         "name" : "Jerome",
+         "color" : "Blue",
+         "gender" : "Male"
+      },
+      {
+         "color" : "Blue",
+         "name" : "Curly",
+         "gender" : "Male",
+         "lastname" : "Howard",
+         "birthdate" : "1903-08-22T10:00:00.000Z"
+      },
+      {
+         "lastname" : "Horwitz",
+         "birthdate" : "1897-06-19T10:00:00.000Z",
+         "color" : "Red",
+         "gender" : "Male",
+         "name" : "Moses"
+      },
+      {
+         "birthdate" : "1897-06-19T10:00:00.000Z",
+         "lastname" : "Howard",
+         "color" : "Red",
+         "name" : "Moe",
+         "gender" : "Male"
+      },
+      {
+         "birthdate" : "1902-08-05T10:00:00.000Z",
+         "lastname" : "Fine",
+         "color" : "Green",
+         "name" : "Larry",
+         "gender" : "Male"
+      },
+      {
+         "birthdate" : "1895-03-11T10:00:00.000Z",
+         "lastname" : "Howard",
+         "gender" : "Male",
+         "color" : "Yellow",
+         "name" : "Shemp"
+      },
+      {
+         "lastname" : "Horwitz",
+         "birthdate" : "1895-03-11T10:00:00.000Z",
+         "name" : "Samuel",
+         "color" : "Yellow",
+         "gender" : "Male"
+      },
+      {
+         "gender" : "Female",
+         "color" : "Purple",
+         "name" : "Marjorie",
+         "birthdate" : "1904-06-22T10:00:00.000Z",
+         "lastname" : "White"
+      },
+      {
+         "gender" : "Female",
+         "color" : "Purple",
+         "name" : "Marjorie",
+         "lastname" : "Guthrie",
+         "birthdate" : "1904-06-22T10:00:00.000Z"
+      }
+   ]
+}

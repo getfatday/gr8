@@ -54,6 +54,15 @@ Comma delimited list of field headers to sort by
 Format outputted results (`delimited` or `json`)
 (default: 'delimited')
 
+**--server**
+
+Create an API server
+
+**-p, --port**
+
+Port API server should listen to
+(default: `0`)
+
 **-h, --help**
 
 Output usage information
@@ -104,6 +113,42 @@ stream.write('Horwitz | Moses  | Male | Red   | 1897-06-19');
 stream.end();
 ```
 
+## API
+
+### GET /records/{sort}
+
+- Parameters
+
+    - sort: `lastname,-name` (string) - Comma delimited list of field headers to sort by
+
+- Response 200 (application/json)
+
+        {
+          "records" : [
+            {
+              "lastname" : "Horwitz",
+              "birthdate" : "1903-08-22T10:00:00.000Z",
+              "name" : "Jerome",
+              "color" : "Blue",
+              "gender" : "Male"
+            }
+          ]
+        }
+
+### POST /records
+
+- Request (text/plain)
+
+        Horwitz, Jerome, Male, Blue, 8/22/1903
+        Howard, Curly, Male, Blue, 8/22/1903
+
+- Response 200 (application/json)
+
+        {
+          "lastCount" : 2,
+          "count" : 4
+        }
+
 ## Run tests
 
 ```sh
@@ -111,6 +156,8 @@ npm test
 ```
 
 ## Challenges
+
+### CLI
 
 Sorted by gender (females before males) then by last name ascending.
 
@@ -152,4 +199,47 @@ Fine, Larry, Male, Green, 8/5/1902
 Howard, Shemp, Male, Yellow, 3/11/1895
 Horwitz, Samuel, Male, Yellow, 3/11/1895
 EOF
+```
+
+### API
+
+Initialize server
+
+```sh
+gr8 --server --port 8080 -f lastname,name,gender,color,birthdate << EOF
+Horwitz, Jerome, Male, Blue, 8/22/1903
+Howard, Curly, Male, Blue, 8/22/1903
+Horwitz, Moses, Male, Red, 6/19/1897
+Howard, Moe, Male, Red, 6/19/1897
+Fine, Larry, Male, Green, 8/5/1902
+Howard, Shemp, Male, Yellow, 3/11/1895
+Horwitz, Samuel, Male, Yellow, 3/11/1895
+EOF
+```
+
+POST /records
+
+```sh
+curl -sS -X POST --data-binary @- 0.0.0.0:8080/records << EOF
+White, Marjorie, Female, Purple, 6/22/1904
+Guthrie, Marjorie, Female, Purple, 6/22/1904
+EOF
+```
+
+GET /records sorted by `gender`
+
+```sh
+curl 0.0.0.0:8080/records/gender
+```
+
+GET /records sorted by `birthdate`
+
+```sh
+curl 0.0.0.0:8080/records/birthdate
+```
+
+GET /records sorted by `name`
+
+```sh
+curl 0.0.0.0:8080/records/name
 ```

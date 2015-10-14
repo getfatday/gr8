@@ -6,11 +6,12 @@ import fs from 'fs';
 import merge from 'merge-stream';
 import gr8 from './index';
 import { delimited, json } from './format';
+import combine from 'stream-combiner2';
+import api from './api';
 
 // Setup cli options
 const argv = cli
         .usage('Usage: $0 [options] [file]')
-        .default('format', 'delimited')
         .describe('format', 'Format outputted results')
         .choices('format', ['json', 'delimited'])
         .nargs('format', 1)
@@ -30,6 +31,13 @@ const argv = cli
         .nargs('f', 1)
         .describe('f', 'Comma delimited list of field headers to user')
         .example('$0  -f last,first,gender', 'Map parsed files to custom fields')
+        .boolean('server')
+        .describe('server', 'Create an API server')
+        .default('port', 0)
+        .nargs('port', 1)
+        .alias('port', 'p')
+        .describe('port', 'Port API server should listen to')
+        .example('$0  --server --port 8080', 'Start an API server on port 8080')
         .argv;
 
 // Create multiplex stream
@@ -42,22 +50,34 @@ argv._.forEach(fp => input.add(fs.createReadStream(fp)));
 if (!process.stdin.isTTY) input.add(process.stdin);
 
 const {
-  format,
+  format = !argv.server ? 'delimited' : undefined,
   fields,
   delimiter,
-  sort
+  sort,
+  server,
+  port
 } = argv;
 
-// Send input to gr8 and pipe output to stdout
-input
-  .pipe(gr8({
+const fieldMap = fields.split(/[ ,]+/);
+
+// Create gr8 stream instance
+let stack = [
+  gr8({
     format,
-    fields: fields.split(/[ ,]+/),
+    fields: fieldMap,
     delimiter,
     sort: !sort ? false : sort.split(/[ ,]+/).map(name => {
       return name.indexOf('-') === 0
         ? [name.slice(1), false]
         : [name, true];
     })
-  }))
+  })
+];
+
+// Create API server
+if (server) stack.push(api({ port, fields: fieldMap }));
+
+// Send input to stream stack and pipe output to stdout
+input
+  .pipe(combine.obj(stack))
   .pipe(process.stdout);
